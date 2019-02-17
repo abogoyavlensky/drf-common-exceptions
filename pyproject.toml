@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "drf-common-exception"
+name = "drf-common-exceptions"
 version = "0.1.0"
 description = "Common exception for Django REST framework"
 authors = ["Andrey Bogoyavlensky <abogoyavlensky@gmail.com>"]
 packages = [
-    { include = "drf_common_exception" },
+    { include = "drf_common_exceptions" },
 ]
 
 [tool.poetry.dependencies]

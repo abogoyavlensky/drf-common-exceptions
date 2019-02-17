@@ -1,4 +1,4 @@
-from drf_common_exception import __version__
+from drf_common_exceptions import __version__
 
 
 def test_version():

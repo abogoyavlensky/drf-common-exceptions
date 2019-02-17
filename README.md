@@ -1,4 +1,4 @@
-drf-common-exception
+drf-common-exceptions
 ===
 
 Common exception for Django REST framework

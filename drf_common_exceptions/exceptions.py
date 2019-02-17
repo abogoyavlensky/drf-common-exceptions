@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    drf-common-exception/exceptions.py
+    drf-common-exceptions/exceptions.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Implementation of common exception handler for Django REST framework.

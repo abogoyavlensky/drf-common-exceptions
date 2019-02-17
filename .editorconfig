@@ -11,7 +11,7 @@ trim_trailing_whitespace = true
 [*.py]
 indent_size = 4
 line_length=79
-known_first_party=drf-common-exception
+known_first_party=drf-common-exceptions
 multi_line_output=3
 default_section=THIRDPARTY
 
