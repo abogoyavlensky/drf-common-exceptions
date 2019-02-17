@@ -14,18 +14,18 @@ import sys
 from builtins import str as text
 from collections import OrderedDict
 
-# TODO: update with api_settings frm rest_framework and add own settings
-from django.conf import settings
 from rest_framework import exceptions, status
 from rest_framework.serializers import Serializer
+from rest_framework.settings import api_settings
 from rest_framework.views import exception_handler as origin_exception_handler
+
+# TODO: make configurable from settings
+NON_FIELD_ERRORS_KEY_LABEL = None
 
 
 def get_service(view):
     """Returns service name by view and stacktrace."""
-    service = ".".join(
-        [view.__class__.__module__, view.__class__.__name__]
-    )
+    service = ".".join([view.__class__.__module__, view.__class__.__name__])
     _, _, tb = sys.exc_info()
     tb = getattr(tb, "tb_next", tb)
     return ":".join([service, text(tb.tb_lineno)])
@@ -34,10 +34,10 @@ def get_service(view):
 def get_label(path, serializer):
     """Return label for field by serializer data."""
     if not serializer:
-        return settings.NON_FIELD_ERRORS_KEY_LABEL
+        return NON_FIELD_ERRORS_KEY_LABEL
     field_name, tail = path[0], path[1:]
-    if field_name == settings.NON_FIELD_ERRORS_KEY:
-        return settings.NON_FIELD_ERRORS_KEY_LABEL
+    if field_name == api_settings.NON_FIELD_ERRORS_KEY:
+        return NON_FIELD_ERRORS_KEY_LABEL
     field = serializer.fields.get(field_name)
     if isinstance(field, Serializer) and tail:
         return get_label(tail, field)
@@ -100,8 +100,8 @@ def common_exception_handler(exc, context):
             messages = detail if isinstance(detail, list) else [detail]
             detail = [
                 {
-                    "label": settings.NON_FIELD_ERRORS_KEY_LABEL,
-                    "field": settings.NON_FIELD_ERRORS_KEY,
+                    "label": NON_FIELD_ERRORS_KEY_LABEL,
+                    "field": api_settings.NON_FIELD_ERRORS_KEY,
                     "messages": messages,
                 }
             ]
