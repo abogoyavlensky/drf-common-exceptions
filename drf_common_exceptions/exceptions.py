@@ -23,6 +23,7 @@ from rest_framework.views import exception_handler as origin_exception_handler
 NON_FIELD_ERRORS_KEY_LABEL = None
 
 
+
 def get_service(view):
     """Returns service name by view and stacktrace."""
     service = ".".join([view.__class__.__module__, view.__class__.__name__])
