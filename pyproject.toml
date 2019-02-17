@@ -3,6 +3,9 @@ name = "drf-common-exception"
 version = "0.1.0"
 description = "Common exception for Django REST framework"
 authors = ["Andrey Bogoyavlensky <abogoyavlensky@gmail.com>"]
+packages = [
+    { include = "drf_common_exception" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.6"
