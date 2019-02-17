@@ -16,20 +16,19 @@ from collections import OrderedDict
 
 # TODO: update with api_settings frm rest_framework and add own settings
 from django.conf import settings
-
 from rest_framework import exceptions, status
 from rest_framework.serializers import Serializer
 from rest_framework.views import exception_handler as origin_exception_handler
 
 
-def get_service_name(view):
+def get_service(view):
     """Returns service name by view and stacktrace."""
-    service_name = ".".join(
+    service = ".".join(
         [view.__class__.__module__, view.__class__.__name__]
     )
     _, _, tb = sys.exc_info()
     tb = getattr(tb, "tb_next", tb)
-    return ":".join([service_name, text(tb.tb_lineno)])
+    return ":".join([service, text(tb.tb_lineno)])
 
 
 def get_label(path, serializer):
@@ -67,15 +66,14 @@ def common_exception_handler(exc, context):
     """Add single format for exception and validation errors.
     Example error:
         {
-            "service_name": "apps.activities.viewsets.ActivityViewSet:20",
-            "error_code": "ValidationError",
+            "service": "apps.users.viewsets.UserViewSet:20",
+            "error": "ValidationError",
             "detail": [
                 {
-                    "label": "Название",
+                    "label": "Name",
                     "field": "name",
-                    "integration_id": "25345325253242532" IntegrationID ESB
                     "messages": [
-                        "Это поле обязательно."
+                        "This is required field."
                     ]
                 }
             ]
@@ -90,12 +88,10 @@ def common_exception_handler(exc, context):
             detail = response.data
         if isinstance(detail, dict):
             serializer = getattr(exc.detail, "serializer", None)
-            integration_id = detail.pop("integration_id", None)
             detail = [
                 {
                     "label": get_label(k.split("."), serializer),
                     "field": k,
-                    "integration_id": integration_id,
                     "messages": handle_errors(v),
                 }
                 for k, v in flatten_dict(detail).items()
@@ -112,8 +108,8 @@ def common_exception_handler(exc, context):
         # Result
         response.data = OrderedDict(
             [
-                ("service_name", get_service_name(context.get("view"))),
-                ("error_code", exc.__class__.__name__),
+                ("service", get_service(context.get("view"))),
+                ("error", exc.__class__.__name__),
                 ("detail", detail),
             ]
         )
@@ -121,8 +117,10 @@ def common_exception_handler(exc, context):
 
 
 class CommonExceptionHandlerMixin(object):
+    """Mixin to apply common exception for particular view."""
+
     def get_exception_handler(self):
-        """Return"""
+        """Return customized exception handler."""
         return common_exception_handler
 
     def handle_exception(self, exc):

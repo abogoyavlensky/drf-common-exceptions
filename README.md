@@ -1,7 +1,7 @@
 drf-common-exception
 ===
 
-### Common exception for Django REST framework
+Common exception for Django REST framework
 
 Documentation link
 <!-- TODO: -->
