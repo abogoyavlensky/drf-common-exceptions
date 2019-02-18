@@ -16,12 +16,11 @@ from collections import OrderedDict
 
 from rest_framework import exceptions, status
 from rest_framework.serializers import Serializer
-from rest_framework.settings import api_settings
 from rest_framework.views import exception_handler as origin_exception_handler
 
 # TODO: make configurable from settings
 NON_FIELD_ERRORS_KEY_LABEL = None
-
+NON_FIELD_ERRORS_KEY = "none_field_errors"
 
 
 def get_service(view):
@@ -29,7 +28,8 @@ def get_service(view):
     service = ".".join([view.__class__.__module__, view.__class__.__name__])
     _, _, tb = sys.exc_info()
     tb = getattr(tb, "tb_next", tb)
-    return ":".join([service, text(tb.tb_lineno)])
+    lineno = getattr(tb, 'tb_lineno', '')
+    return ":".join([service, text(lineno)])
 
 
 def get_label(path, serializer):
@@ -37,7 +37,7 @@ def get_label(path, serializer):
     if not serializer:
         return NON_FIELD_ERRORS_KEY_LABEL
     field_name, tail = path[0], path[1:]
-    if field_name == api_settings.NON_FIELD_ERRORS_KEY:
+    if field_name == NON_FIELD_ERRORS_KEY:
         return NON_FIELD_ERRORS_KEY_LABEL
     field = serializer.fields.get(field_name)
     if isinstance(field, Serializer) and tail:
@@ -102,7 +102,7 @@ def common_exception_handler(exc, context):
             detail = [
                 {
                     "label": NON_FIELD_ERRORS_KEY_LABEL,
-                    "field": api_settings.NON_FIELD_ERRORS_KEY,
+                    "field": NON_FIELD_ERRORS_KEY,
                     "messages": messages,
                 }
             ]

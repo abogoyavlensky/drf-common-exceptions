@@ -24,9 +24,5 @@ Documentation link
 
 <!-- TODO: -->
 
-### TODO:
-
-- [ ] Improve detecting line number of exception
-
 ## Development
 <!-- TODO: -->
