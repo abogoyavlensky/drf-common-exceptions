@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     drf-common-exceptions/exceptions.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -7,11 +6,8 @@
 
     :copyright: (c) 2019 by Andrey Bogoyavlensky.
 """
-from __future__ import absolute_import, unicode_literals
-
 import collections
 import sys
-from builtins import str as text
 from collections import OrderedDict
 
 from rest_framework import exceptions, status
@@ -29,7 +25,7 @@ def get_service(view):
     _, _, tb = sys.exc_info()
     tb = getattr(tb, "tb_next", tb)
     lineno = getattr(tb, "tb_lineno", "")
-    return ":".join([service, text(lineno)])
+    return ":".join([service, str(lineno)])
 
 
 def get_label(path, serializer):
@@ -60,7 +56,7 @@ def flatten_dict(d, parent_key="", sep="."):
 def handle_errors(value):
     """Return list error messages from value."""
     errors = value if isinstance(value, list) else [value]
-    return [text(e) for e in errors]
+    return [str(e) for e in errors]
 
 
 def common_exception_handler(exc, context):

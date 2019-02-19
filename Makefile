@@ -14,17 +14,18 @@ help:
 	@$(INFO) "Commands:"
 	@grep '^.PHONY: .* #' Makefile | sed 's/\.PHONY: \(.*\) # \(.*\)/\1 > \2/' | column -tx -s ">"
 
-.PHONY: install  # Install requirements to local virtualenv
-install:
-	@poetry install
-
 .PHONY: lint  # Run linting and code auto formatting
 lint:
-	@autoflake --in-place --recursive $(PEP8_CLEANED)
 	@$(INFO) "Formatting..."
 	@black $(PEP8_CLEANED)
 	@$(INFO) "Sorting..."
 	@isort -rc $(PEP8_CLEANED)
+	@$(INFO) "Linting..."
+	@autoflake --in-place --recursive $(PEP8_CLEANED)
+	@$(INFO) "Checking types..."
+	@mypy --ignore-missing-imports --disallow-untyped-defs $(PEP8_CLEANED)
+	@$(INFO) "Checking complexity..."
+	@xenon --max-absolute B --max-modules A --max-average A $(PEP8_CLEANED)
 
 .PHONY: clean # Clean temp files from projects: .pyc. .pyo, __pycache__
 clean:
