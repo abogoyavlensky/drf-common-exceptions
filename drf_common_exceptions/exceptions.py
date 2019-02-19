@@ -28,7 +28,7 @@ def get_service(view):
     service = ".".join([view.__class__.__module__, view.__class__.__name__])
     _, _, tb = sys.exc_info()
     tb = getattr(tb, "tb_next", tb)
-    lineno = getattr(tb, 'tb_lineno', '')
+    lineno = getattr(tb, "tb_lineno", "")
     return ":".join([service, text(lineno)])
 
 

@@ -1,0 +1,3 @@
+[run]
+include = rdf_common_exceptions/*
+omit = *tests*, *__init__*
