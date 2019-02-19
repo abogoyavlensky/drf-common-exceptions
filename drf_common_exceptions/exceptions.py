@@ -9,8 +9,12 @@
 import collections
 import sys
 from collections import OrderedDict
+from typing import List, Optional, Union
 
 from rest_framework import exceptions, status
+from rest_framework.compat import View
+from rest_framework.exceptions import APIException
+from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 from rest_framework.views import exception_handler as origin_exception_handler
 
@@ -19,7 +23,7 @@ NON_FIELD_ERRORS_KEY_LABEL = None
 NON_FIELD_ERRORS_KEY = "none_field_errors"
 
 
-def get_service(view):
+def get_service(view: View) -> str:
     """Returns service name by view and stacktrace."""
     service = ".".join([view.__class__.__module__, view.__class__.__name__])
     _, _, tb = sys.exc_info()
@@ -28,7 +32,7 @@ def get_service(view):
     return ":".join([service, str(lineno)])
 
 
-def get_label(path, serializer):
+def get_label(path: str, serializer: Serializer) -> Optional[str]:
     """Return label for field by serializer data."""
     if not serializer:
         return NON_FIELD_ERRORS_KEY_LABEL
@@ -41,10 +45,12 @@ def get_label(path, serializer):
     return getattr(field, "label", "")
 
 
-def flatten_dict(d, parent_key="", sep="."):
+def flatten_dict(
+    data: collections.MutableMapping, parent_key: str = "", sep: str = "."
+) -> dict:
     """Return nested dict as single level dict."""
-    items = []
-    for k, v in d.items():
+    items: list = []
+    for k, v in data.items():
         new_key = sep.join([parent_key, k]) if parent_key and sep else k
         if isinstance(v, collections.MutableMapping):
             items.extend(flatten_dict(v, new_key, sep=sep).items())
@@ -53,13 +59,13 @@ def flatten_dict(d, parent_key="", sep="."):
     return dict(items)
 
 
-def handle_errors(value):
+def handle_errors(value: Union[List[str], str]) -> List[str]:
     """Return list error messages from value."""
     errors = value if isinstance(value, list) else [value]
     return [str(e) for e in errors]
 
 
-def common_exception_handler(exc, context):
+def common_exception_handler(exc: APIException, context: dict) -> Response:
     """Add single format for exception and validation errors.
     Example error:
         {
@@ -116,25 +122,27 @@ def common_exception_handler(exc, context):
 class CommonExceptionHandlerMixin(object):
     """Mixin to apply common exception for particular view."""
 
-    def get_exception_handler(self):
+    def get_exception_handler(self) -> Response:
         """Return customized exception handler."""
         return common_exception_handler
 
-    def handle_exception(self, exc):
+    def handle_exception(self, exc: APIException) -> Response:
         """Overriding default exception handler for particular views."""
         if isinstance(
             exc, (exceptions.NotAuthenticated, exceptions.AuthenticationFailed)
         ):
             # WWW-Authenticate header for 401 responses, else coerce to 403
-            auth_header = self.get_authenticate_header(self.request)
+            auth_header = self.get_authenticate_header(  # type: ignore
+                self.request  # type: ignore
+            )
             if auth_header:
                 exc.auth_header = auth_header
             else:
                 exc.status_code = status.HTTP_403_FORBIDDEN
         exception_handler = self.get_exception_handler()
-        context = self.get_exception_handler_context()
+        context = self.get_exception_handler_context()  # type: ignore
         response = exception_handler(exc, context)
         if response is None:
-            self.raise_uncaught_exception(exc)
+            self.raise_uncaught_exception(exc)  # type: ignore
         response.exception = True
         return response
