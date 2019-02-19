@@ -31,7 +31,7 @@ lint:
 clean:
 	@find . -type f -name "*.py[co]" -delete
 	@find . -type d -name "__pycache__" -delete
-	@rm -rf .pytest_cache .mypy_cache
+	@rm -rf .pytest_cache .mypy_cache .coverage.*
 	@$(INFO) "Python caching files has been cleaned"
 
 .PHONY: test  # Test package
