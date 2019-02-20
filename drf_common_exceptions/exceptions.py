@@ -32,7 +32,7 @@ def get_service(view: View) -> str:
     return ":".join([service, str(lineno)])
 
 
-def get_label(path: str, serializer: Serializer) -> Optional[str]:
+def get_label(path: List[str], serializer: Serializer) -> Optional[str]:
     """Return label for field by serializer data."""
     if not serializer:
         return NON_FIELD_ERRORS_KEY_LABEL

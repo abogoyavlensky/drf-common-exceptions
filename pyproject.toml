@@ -20,6 +20,7 @@ pytest-cov = "^2.6"
 pytest-watch = "^4.2"
 mypy = "^0.670.0"
 xenon = "^0.5.5"
+pytest-django = "^3.4"
 
 [tool.black]
 line-length = 79
