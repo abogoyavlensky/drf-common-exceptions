@@ -16,11 +16,12 @@ from rest_framework.compat import View
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
+from rest_framework.settings import api_settings
 from rest_framework.views import exception_handler as origin_exception_handler
 
 # TODO: make configurable from settings
-NON_FIELD_ERRORS_KEY_LABEL = None
-NON_FIELD_ERRORS_KEY = "none_field_errors"
+DRF_EXCEPTIONS_NON_FIELD_ERRORS_LABEL = None
+DRF_EXCEPTIONS_SEPARATOR = "."
 
 
 def get_service(view: View) -> str:
@@ -35,10 +36,10 @@ def get_service(view: View) -> str:
 def get_label(path: List[str], serializer: Serializer) -> Optional[str]:
     """Return label for field by serializer data."""
     if not serializer:
-        return NON_FIELD_ERRORS_KEY_LABEL
+        return DRF_EXCEPTIONS_NON_FIELD_ERRORS_LABEL
     field_name, tail = path[0], path[1:]
-    if field_name == NON_FIELD_ERRORS_KEY:
-        return NON_FIELD_ERRORS_KEY_LABEL
+    if field_name == api_settings.NON_FIELD_ERRORS_KEY:
+        return DRF_EXCEPTIONS_NON_FIELD_ERRORS_LABEL
     field = serializer.fields.get(field_name)
     if isinstance(field, Serializer) and tail:
         return get_label(tail, field)
@@ -46,9 +47,12 @@ def get_label(path: List[str], serializer: Serializer) -> Optional[str]:
 
 
 def flatten_dict(
-    data: collections.MutableMapping, parent_key: str = "", sep: str = "."
+    data: collections.MutableMapping,
+    parent_key: str = "",
+    sep: Optional[str] = None,
 ) -> dict:
     """Return nested dict as single level dict."""
+    sep = sep or DRF_EXCEPTIONS_SEPARATOR
     items: list = []
     for k, v in data.items():
         new_key = sep.join([parent_key, k]) if parent_key and sep else k
@@ -89,6 +93,7 @@ def common_exception_handler(exc: APIException, context: dict) -> Response:
             detail = response.data.get("detail")
         else:
             detail = response.data
+
         if isinstance(detail, dict):
             serializer = getattr(exc.detail, "serializer", None)
             detail = [
@@ -103,8 +108,8 @@ def common_exception_handler(exc: APIException, context: dict) -> Response:
             messages = detail if isinstance(detail, list) else [detail]
             detail = [
                 {
-                    "label": NON_FIELD_ERRORS_KEY_LABEL,
-                    "field": NON_FIELD_ERRORS_KEY,
+                    "label": DRF_EXCEPTIONS_NON_FIELD_ERRORS_LABEL,
+                    "field": api_settings.NON_FIELD_ERRORS_KEY,
                     "messages": messages,
                 }
             ]
