@@ -28,7 +28,7 @@ $ pip install drf-common-exceptions
 You can define common exception handler for whole project. Just put the
 following line to your django settings inside drf section:
 
-```json
+```
 REST_FRAMEWORK = {
   ...
   "EXCEPTION_HANDLER": "drf_common_exceptions.common_exception_handler",
