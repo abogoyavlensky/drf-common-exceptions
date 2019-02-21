@@ -13,7 +13,7 @@ with extended fields info.
 
 ## Requirements
 
-- Python (3.5+)
+- Python (3.6+)
 - Django (1.11.x, 2+)
 - Django REST Framework (3.7+)
 

@@ -6,8 +6,8 @@ authors = ["Andrey Bogoyavlensky <abogoyavlensky@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-djangorestframework = "^3.9"
-django = "^2.1"
+djangorestframework = { version = "^3.7" }
+django = { version = ">=1.11" }
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"

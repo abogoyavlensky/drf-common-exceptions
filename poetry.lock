@@ -426,7 +426,7 @@ radon = ">=2,<3"
 requests = ">=2.0,<3.0"
 
 [metadata]
-content-hash = "a9c7af3dd997e315fee479cd8f288e984fde310d52c15f7a2c0ba04b5d5fd2f4"
+content-hash = "3b0592971dcbd695a891262ac85028659b596d4389997eae3fed09d4b2ce7017"
 python-versions = "^3.6"
 
 [metadata.hashes]
