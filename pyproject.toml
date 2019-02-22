@@ -3,6 +3,12 @@ name = "drf-common-exceptions"
 version = "0.1.0"
 description = "Common exception for Django REST framework"
 authors = ["Andrey Bogoyavlensky <abogoyavlensky@gmail.com>"]
+license = "MIT"
+readme = 'README.md'
+homepage = "https://github.com/abogoyavlensky/drf-common-exceptions"
+repository = "https://github.com/abogoyavlensky/drf-common-exceptions"
+documentation = "https://github.com/abogoyavlensky/drf-common-exceptions/blob/master/README.md"
+keywords = ['exceptions', 'django', 'djangorestframework', 'drf']
 
 [tool.poetry.dependencies]
 python = "^3.6"
@@ -21,6 +27,9 @@ pytest-watch = "^4.2"
 mypy = "^0.670.0"
 xenon = "^0.5.5"
 pytest-django = "^3.4"
+tox = "^3.7"
+tox-travis = "^0.11.0"
+codecov = "^2.0"
 
 [tool.black]
 line-length = 79
