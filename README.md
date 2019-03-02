@@ -84,7 +84,7 @@ $ make clean
 $ make lint
 ```
 
-Publish to pypi be default patch version:
+Publish to pypi by default patch version:
 ```bash
 $ make publish
 ```
