@@ -1,20 +1,20 @@
 drf-common-exceptions
 ===
 
-<!-- TODO: add labels as table -->
+| CI | Release | Coverage |
+|----|---------|----------|
+|[![build](https://img.shields.io/travis/com/abogoyavlensky/drf-common-exceptions.svg)](https://travis-ci.com/abogoyavlensky/drf-common-exceptions)| [![pypi](https://img.shields.io/pypi/v/drf-common-exceptions.svg)](https://pypi.python.org/pypi/drf-common-exceptions)|[![codecov](https://img.shields.io/codecov/c/github/abogoyavlensky/drf-common-exceptions.svg)](https://codecov.io/gh/abogoyavlensky/drf-common-exceptions)|
 
-Common exception for Django REST framework. Produces single generic interface of
-returning data structure for any kind of exceptions which are processed by
+Common exception for Django REST framework. Provides single generic interface of
+returning data structure for any kind of exceptions which are handled by
 Django REST framework. Includes error name, path to service with line
 where the error occurs and a list of actual error messages
 with extended fields info.
 
-<!-- TODO: documentation link -->
-
 ## Requirements
 
 - Python (3.6+)
-- Django (1.11.x, 2+)
+- Django (1.11.x, 2.0+)
 - Django REST Framework (3.7+)
 
 ## Installation
@@ -63,8 +63,6 @@ The output will looks like for example validation error:
 ```
 
 The data structure will be the same for any other errors.
-
-<!-- TODO: add info about configuration when it will be added -->
 
 ## Development
 
