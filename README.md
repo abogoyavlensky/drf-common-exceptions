@@ -1,9 +1,9 @@
 drf-common-exceptions
 ===
 
-| CI | Release | Coverage |
-|----|---------|----------|
-|[![build](https://img.shields.io/travis/com/abogoyavlensky/drf-common-exceptions.svg)](https://travis-ci.com/abogoyavlensky/drf-common-exceptions)| [![pypi](https://img.shields.io/pypi/v/drf-common-exceptions.svg)](https://pypi.python.org/pypi/drf-common-exceptions)|[![codecov](https://img.shields.io/codecov/c/github/abogoyavlensky/drf-common-exceptions.svg)](https://codecov.io/gh/abogoyavlensky/drf-common-exceptions)|
+| Release | CI | Coverage |
+|---------|----|----------|
+|[![pypi](https://img.shields.io/pypi/v/drf-common-exceptions.svg)](https://pypi.python.org/pypi/drf-common-exceptions)|[![build](https://img.shields.io/travis/com/abogoyavlensky/drf-common-exceptions.svg)](https://travis-ci.com/abogoyavlensky/drf-common-exceptions)|[![codecov](https://img.shields.io/codecov/c/github/abogoyavlensky/drf-common-exceptions.svg)](https://codecov.io/gh/abogoyavlensky/drf-common-exceptions)|
 
 Common exception for Django REST framework. Provides single generic interface of
 returning data structure for any kind of exceptions which are handled by
@@ -82,4 +82,14 @@ $ make test
 $ make watch
 $ make clean
 $ make lint
+```
+
+Publish to pypi be default patch version:
+```bash
+$ make publish
+```
+
+or any level you want:
+```bash
+$ make publish minor
 ```

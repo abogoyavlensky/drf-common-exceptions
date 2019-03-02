@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "drf-common-exceptions"
-version = "0.1.0"
+version = "0.1.1"
 description = "Common exception for Django REST framework"
 authors = ["Andrey Bogoyavlensky <abogoyavlensky@gmail.com>"]
 license = "MIT"
